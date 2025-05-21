@@ -8,6 +8,8 @@ JSON-Based Data Pipeline: The final summarized news is stored in a structured `n
 Daily GitHub Update: This file is automatically pushed to a GitHub repository every day, ensuring the web app always serves fresh content.
 Clean Web Interface: Users can view summaries by category (e.g., India, World, Technology), with a simple and dynamic UI for easy navigation.
 
+Web app link: https://tonny-2200.github.io/uberblick/
+
 ![Data Pipeline  Architecture of Uberblick web application](https://github.com/user-attachments/assets/69bcb559-8991-4fcb-8ef9-3932363cdf54)
 
 
