@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Überblick</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <button id="backBtn" style="display: none;">Back</button>
+    <h1>Überblick</h1>
+  </header>
+
+  <div id="top-bar">
+    <nav id="category-bar"></nav>
+    <span id="dateDisplay"></span>
+  </div>
+
+  <main id="content"></main>
+
+  <script>
+    let newsData = {};
+    let currentCategory = '';
+
+    async function loadNews() {
+      const response = await fetch('news.json');
+      newsData = await response.json();
+
+      document.getElementById('dateDisplay').textContent = newsData.date;
+
+      createCategoryButtons();
+
+      const firstCategory = Object.keys(newsData).find(key => key !== 'date');
+      if (firstCategory) {
+        showCategory(firstCategory, false);
+      }
+    }
+
+    function createCategoryButtons() {
+      const nav = document.getElementById('category-bar');
+      nav.innerHTML = ''; // Clear the navigation bar
+    
+      Object.keys(newsData).forEach(category => {
+        if (category === 'date') return; // Skip the 'date' category
+    
+        const btn = document.createElement('button');
+        btn.textContent = category;
+        btn.className = 'category-button';
+        
+        // Add event listener to handle category button click
+        btn.onclick = () => {
+          // Remove the 'clicked' class from all buttons
+          document.querySelectorAll('.category-button').forEach(button => {
+            button.classList.remove('clicked');
+          });
+    
+          // Add the 'clicked' class to the clicked button
+          btn.classList.add('clicked');
+    
+          // Show the selected category
+          showCategory(category, true);
+        };
+    
+        nav.appendChild(btn);
+      });
+    }
+    
+
+    function showCategory(category, showBack) {
+      currentCategory = category;
+      const content = document.getElementById('content');
+      content.innerHTML = '';
+      document.getElementById('backBtn').style.display = showBack ? 'inline-block' : 'none';
+
+      newsData[category].forEach(article => {
+        const articleDiv = document.createElement('div');
+        articleDiv.className = 'article';
+        articleDiv.innerHTML = `
+          <h2>${article.title}</h2>
+          <p>${article.body_text}</p>
+        `;
+        content.appendChild(articleDiv);
+      });
+    }
+
+    document.getElementById('backBtn').onclick = () => {
+      const firstCategory = Object.keys(newsData).find(key => key !== 'date');
+      if (firstCategory) {
+        showCategory(firstCategory, false);
+      }
+    };
+
+    loadNews();
+  </script>
+  <footer id="contact">
+    <h2>Contact Info</h2>
+    <p>Email: <a href="mailto:tanmaythombare2200@gmail.com">tanmaythombare2200@gmail.com</a></p>
+  </footer>
+  
+</body>
+</html>
